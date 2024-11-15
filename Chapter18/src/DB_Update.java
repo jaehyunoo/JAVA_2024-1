@@ -3,20 +3,21 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
-public class DB_Select {
+public class DB_Update {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		//드라이버 설정 
 		String jdbcDriver = "com.mysql.cj.jdbc.Driver";
-		
+				
 		//데이터베이스 URL 설정
 		String url = "jdbc:mysql://localhost:3306/dbstudent?";
-		
+				
 		//Connection  클래스 변수 선언. 
 		Connection conn;
-		
+				
 		String id = "root"; //DB에 로그인할 ID
 		String pw = "1234"; //MYSQL 설정시 입력한 PASSWORD
 		
@@ -41,9 +42,13 @@ public class DB_Select {
 			//3단계 : Statement 생성 
 			stmt = conn.createStatement();
 			
-			//3단계 : SQL문 전송 & 4단계 : 결과받기
-			result = stmt.executeQuery("select * from student");
-			printData(result, "NAME", "Dept", "ID");
+			//3단계 : SQL문 전송
+			// 홍길동의 학번을 수정하시오
+			stmt.executeUpdate("update student set id='202033021' where name ='김라면';");
+			stmt.executeUpdate("update student set Dept='식품영양과' where name ='김구라';");
+			
+			printTable(stmt);
+			
 			//5단계 연결 해제 
 			conn.close();
 		}catch(ClassNotFoundException e) {
@@ -54,17 +59,23 @@ public class DB_Select {
 		finally {
 			System.out.println("끝");
 		}
-		
-		
-	}
-	private static void printData(ResultSet rs, String col1, String col2, String col3) throws SQLException{
-		while(rs.next()) {
-			if(!col1.equals("")) System.out.print(rs.getString("NAME"));
-			if(!col2.equals("")) System.out.print("\t|\t" + rs.getString("ID"));
-			if(!col3.equals("")) System.out.print("\t|\t" + rs.getString("Dept"));
-			System.out.println();
 
-		}
 	}
+	
+	private static void printTable(Statement stmt) throws SQLException{
+		//5단계 결과 받기 
+		ResultSet  result = stmt.executeQuery("select * from student");
+		//executeQuery : 주어진 SQL문을 실행하고 결과는 ResultSet 객체에 반환. 
+		while(result.next()) {
+			System.out.print(result.getString("NAME"));
+			System.out.print("\t|\t" + result.getString("ID"));
+			System.out.println("\t|\t" + result.getString("Dept"));
+			//getString() 메소드 : 해당 데이터 타입으로  '열' 값을 읽어온다. 
+		}
+		//5단계 연결 해제 
+		result.close();
+		//ResultSet에서 모든 데이터를 다 읽어들인 후 자원 해제. 
+	}
+
 }
 

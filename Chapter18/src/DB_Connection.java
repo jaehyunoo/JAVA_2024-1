@@ -1,10 +1,8 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class DB_Select {
+public class DB_Connection {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -20,13 +18,6 @@ public class DB_Select {
 		String id = "root"; //DB에 로그인할 ID
 		String pw = "1234"; //MYSQL 설정시 입력한 PASSWORD
 		
-		//statement : SQL문 실행하기 위해 사용하는 클래스 
-		Statement stmt = null;
-		
-		//ResultSet : SQL문 실행결과를 얻어오기 위한 클래스 
-		ResultSet result = null;
-		
-		
 		try {
 			//1단계 : JDBC드라이버 로드 
 			Class.forName(jdbcDriver);
@@ -36,14 +27,6 @@ public class DB_Select {
 			//DriverManager 자바 어플리케이션을 JDBC드라이버에 연결시켜주는 클래스
 			//getConnection() 메소드로 DB에 연결하여 Connection 객체 반환. 
 			
-			System.out.println("DB연결 완료");
-			
-			//3단계 : Statement 생성 
-			stmt = conn.createStatement();
-			
-			//3단계 : SQL문 전송 & 4단계 : 결과받기
-			result = stmt.executeQuery("select * from student");
-			printData(result, "NAME", "Dept", "ID");
 			//5단계 연결 해제 
 			conn.close();
 		}catch(ClassNotFoundException e) {
@@ -52,19 +35,10 @@ public class DB_Select {
 			System.out.println("DB 연결 오류");
 		}
 		finally {
-			System.out.println("끝");
+			System.out.println("asdfasdfa");
 		}
 		
 		
 	}
-	private static void printData(ResultSet rs, String col1, String col2, String col3) throws SQLException{
-		while(rs.next()) {
-			if(!col1.equals("")) System.out.print(rs.getString("NAME"));
-			if(!col2.equals("")) System.out.print("\t|\t" + rs.getString("ID"));
-			if(!col3.equals("")) System.out.print("\t|\t" + rs.getString("Dept"));
-			System.out.println();
 
-		}
-	}
 }
-
